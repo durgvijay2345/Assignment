@@ -1,14 +1,11 @@
 const User = require('../models/User');
 const { generateToken } = require('../middleware/auth');
 
-// @desc    Register new user
-// @route   POST /api/auth/register
-// @access  Public
 const register = async (req, res, next) => {
   try {
     const { name, email, password } = req.body;
 
-    // Check if user already exists
+   
     const userExists = await User.findOne({ email });
     if (userExists) {
       return res.status(400).json({
@@ -17,7 +14,7 @@ const register = async (req, res, next) => {
       });
     }
 
-    // Create user
+ 
     const user = await User.create({
       name,
       email,
@@ -25,7 +22,7 @@ const register = async (req, res, next) => {
       avatar: `https://ui-avatars.com/api/?name=${encodeURIComponent(name)}&background=random`,
     });
 
-    // Generate token
+   
     const token = generateToken(user._id);
 
     res.status(201).json({
@@ -47,14 +44,11 @@ const register = async (req, res, next) => {
   }
 };
 
-// @desc    Login user
-// @route   POST /api/auth/login
-// @access  Public
 const login = async (req, res, next) => {
   try {
     const { email, password } = req.body;
 
-    // Check if email and password provided
+   
     if (!email || !password) {
       return res.status(400).json({
         success: false,
@@ -62,7 +56,7 @@ const login = async (req, res, next) => {
       });
     }
 
-    // Find user and include password
+  
     const user = await User.findOne({ email }).select('+password');
 
     if (!user) {
@@ -72,7 +66,7 @@ const login = async (req, res, next) => {
       });
     }
 
-    // Check if password matches
+
     const isPasswordMatch = await user.comparePassword(password);
 
     if (!isPasswordMatch) {
@@ -104,9 +98,7 @@ const login = async (req, res, next) => {
   }
 };
 
-// @desc    Get current logged in user
-// @route   GET /api/auth/me
-// @access  Private
+
 const getMe = async (req, res, next) => {
   try {
     const user = await User.findById(req.user.id);
@@ -129,9 +121,7 @@ const getMe = async (req, res, next) => {
   }
 };
 
-// @desc    Update user profile
-// @route   PUT /api/auth/profile
-// @access  Private
+
 const updateProfile = async (req, res, next) => {
   try {
     const fieldsToUpdate = {
