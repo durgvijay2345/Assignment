@@ -66,13 +66,13 @@ CLIENT_URL=http://localhost:3000
 
 ## Features
 
-- ✅ Secure user authentication
-- ✅ Create, edit, and delete tasks
-- ✅ Search tasks by title
-- ✅ Filter by status (pending, in-progress, completed)
-- ✅ Filter by priority (low, medium, high)
-- ✅ View task statistics
-- ✅ Fully responsive design
+-  Secure user authentication
+-  Create, edit, and delete tasks
+-  Search tasks by title
+-  Filter by status (pending, in-progress, completed)
+-  Filter by priority (low, medium, high)
+-  View task statistics
+-  Fully responsive design
 
 ## Project Structure
 
