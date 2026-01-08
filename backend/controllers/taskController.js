@@ -1,26 +1,23 @@
 const Task = require('../models/Task');
 
-// @desc    Get all tasks for logged in user
-// @route   GET /api/tasks
-// @access  Private
 const getTasks = async (req, res, next) => {
   try {
     const { status, priority, search, sortBy = 'createdAt', order = 'desc' } = req.query;
 
-    // Build query
+   
     const query = { user: req.user.id };
 
-    // Filter by status
+  
     if (status && status !== 'all') {
       query.status = status;
     }
 
-    // Filter by priority
+  
     if (priority && priority !== 'all') {
       query.priority = priority;
     }
 
-    // Search in title and description
+
     if (search) {
       query.$or = [
         { title: { $regex: search, $options: 'i' } },
@@ -28,14 +25,14 @@ const getTasks = async (req, res, next) => {
       ];
     }
 
-    // Sort options
+    
     const sortOrder = order === 'asc' ? 1 : -1;
     const sortOptions = { [sortBy]: sortOrder };
 
-    // Execute query
+
     const tasks = await Task.find(query).sort(sortOptions);
 
-    // Get task statistics
+  
     const stats = await Task.aggregate([
       { $match: { user: req.user._id } },
       {
@@ -64,9 +61,7 @@ const getTasks = async (req, res, next) => {
   }
 };
 
-// @desc    Get single task
-// @route   GET /api/tasks/:id
-// @access  Private
+
 const getTask = async (req, res, next) => {
   try {
     const task = await Task.findById(req.params.id);
@@ -95,9 +90,6 @@ const getTask = async (req, res, next) => {
   }
 };
 
-// @desc    Create new task
-// @route   POST /api/tasks
-// @access  Private
 const createTask = async (req, res, next) => {
   try {
     // Add user to req.body
@@ -115,9 +107,7 @@ const createTask = async (req, res, next) => {
   }
 };
 
-// @desc    Update task
-// @route   PUT /api/tasks/:id
-// @access  Private
+
 const updateTask = async (req, res, next) => {
   try {
     let task = await Task.findById(req.params.id);
@@ -129,7 +119,7 @@ const updateTask = async (req, res, next) => {
       });
     }
 
-    // Make sure user owns the task
+ 
     if (task.user.toString() !== req.user.id) {
       return res.status(403).json({
         success: false,
@@ -152,9 +142,7 @@ const updateTask = async (req, res, next) => {
   }
 };
 
-// @desc    Delete task
-// @route   DELETE /api/tasks/:id
-// @access  Private
+
 const deleteTask = async (req, res, next) => {
   try {
     const task = await Task.findById(req.params.id);
@@ -166,7 +154,7 @@ const deleteTask = async (req, res, next) => {
       });
     }
 
-    // Make sure user owns the task
+   
     if (task.user.toString() !== req.user.id) {
       return res.status(403).json({
         success: false,
