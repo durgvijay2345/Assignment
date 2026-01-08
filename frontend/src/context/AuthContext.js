@@ -17,7 +17,7 @@ export const AuthProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
-  // Check if user is logged in on mount
+ 
   useEffect(() => {
     const checkAuth = async () => {
       const token = localStorage.getItem('token');
@@ -25,12 +25,12 @@ export const AuthProvider = ({ children }) => {
 
       if (token && savedUser) {
         try {
-          // Verify token by fetching profile
+        
           const response = await authAPI.getProfile();
           setUser(response.data.data.user);
           setIsAuthenticated(true);
         } catch (error) {
-          // Token invalid, clear storage
+         
           localStorage.removeItem('token');
           localStorage.removeItem('user');
           setUser(null);
